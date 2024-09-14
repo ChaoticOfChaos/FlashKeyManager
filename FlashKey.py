@@ -41,5 +41,22 @@ def createKey(slot: str, user: str, password: str) -> None:
     keyText = f'user={user}\npass={password}'
     binString = stringToBinary(keyText)
     hexaString = binaryToHexadecimal(binString)
-    with open(f'{slot}key.key', 'w') as k:
+    with open(f'{slot}/key.key', 'w') as k:
         k.write(hexaString)
+
+def createKeyHash(slot: str, user: str, password: str) -> None:
+    keyText = f'user={user}\npass={password}'
+    sha = criarHashSha256(keyText)
+    with open(f'{slot}/key.key', 'w') as k:
+        k.write(sha)
+
+def keyAcessHash(slots: list[str], user: str, password: str) -> bool:
+    key = criarHashSha256(f'user={user}\npass={password}')
+    for slot in slots:
+        if 'key.key' in os.listdir(slot):
+            with open(f'{slot}key.key', 'r') as k:
+                value = k.read()
+                if value == key:
+                    return True
+                
+    return False

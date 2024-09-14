@@ -1,3 +1,5 @@
+import hashlib
+
 # Sistema de Criptografia das Chaves(Sistema Simples)
 def stringToBinary(string: str) -> str:
     return ''.join(format(ord(char), '08b') for char in string)
@@ -14,3 +16,8 @@ def binaryToHexadecimal(binary: str) -> str:
 def hexadecimalToBinary(hexa: str) -> str:
     decimal = int(hexa, 16)
     return bin(decimal)[2:].zfill(len(hexa) * 4)
+
+def criarHashSha256(string: str) -> str:
+    sha = hashlib.sha256()
+    sha.update(string.encode('utf-8'))
+    return sha.hexdigest()
